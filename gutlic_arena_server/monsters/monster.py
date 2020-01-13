@@ -1,4 +1,6 @@
+# TODO: if PCs are going to be monsters, rename this to entity
 import math
+from gutlic_arena_server import dice
 
 
 class Monster:
@@ -12,6 +14,11 @@ class Monster:
         self.cha = _cha
         self.ac = _ac
         self.hd = _hd
+        self.hp = dice.roll(_hd)
+
+        # not on constructor because it would be too long
+        self.actions = []
+        self.faction = None
 
     def get_name(self):
         return self.monsterName
@@ -57,6 +64,26 @@ class Monster:
 
     def get_hd(self):
         return self.hd
+
+    def get_hp(self):
+        return self.hp
+
+    def set_actions(self, actions):
+        self.actions = actions
+
+    def get_actions(self):
+        return self.actions
+
+    def roll_initiative(self):
+        # initiative is d20 plus dex mod
+        # TODO: advantage / disadvantage support
+        return dice.d20() + self.get_dex_mod()
+
+    def set_faction(self, faction):
+        self.faction = faction
+
+    def get_faction(self):
+        return self.faction
 
     @staticmethod
     def _calc_stat_mod(stat):

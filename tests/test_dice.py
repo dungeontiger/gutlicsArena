@@ -24,6 +24,11 @@ class TestMonster(unittest.TestCase):
 
     def test_simple_hd(self):
         hp = dice.roll('2d6 + 1')
+        self.assertTrue(3 <= hp <= 13)
+
+    def test_hd_again(self):
+        hp = dice.roll('2D6')
+        self.assertTrue(2 <= hp <= 12)
 
 
 if __name__ == '__main__':

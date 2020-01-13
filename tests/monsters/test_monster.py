@@ -1,11 +1,16 @@
 import unittest
+from unittest.mock import patch
+
 from gutlic_arena_server.monsters.goblin import Goblin
+from gutlic_arena_server.monsters.orc import Orc
+from gutlic_arena_server.actions.scimitar import Scimitar
 
 
 class TestMonster(unittest.TestCase):
     """Tests the base class Monster through a Goblin instance"""
     def test_create_goblin(self):
         g = Goblin()
+        self.assertIsNotNone(g)
 
     def test_goblin_name(self):
         g = Goblin()
@@ -41,6 +46,29 @@ class TestMonster(unittest.TestCase):
     def test_get_hd(self):
         g = Goblin()
         self.assertEqual(g.get_hd(), '2d6')
+
+    def test_get_hp(self):
+        g = Goblin()
+        self.assertTrue(2 <= g.get_hp() <= 12)
+
+    def test_goblin_actions(self):
+        g = Goblin()
+        self.assertIsInstance(g.get_actions()[0], Scimitar)
+
+    def test_create_orc(self):
+        o = Orc()
+        self.assertIsNotNone(o)
+
+    def test_goblin_initiative(self):
+        g = Goblin()
+        # goblin next mod
+        self.assertTrue(3 <= g.roll_initiative() <= 22)
+
+    def test_goblin_initiative_patch(self):
+        g = Goblin()
+        with patch('gutlic_arena_server.dice._random_int') as mock_roll:
+            mock_roll.return_value = 10
+            self.assertEqual(g.roll_initiative(), 12)
 
 
 if __name__ == '__main__':
