@@ -18,3 +18,6 @@ class Faction:
 
     def get_name(self):
         return self.name
+
+    def __str__(self):
+        return self.name

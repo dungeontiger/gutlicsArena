@@ -1,4 +1,5 @@
 from gutlic_arena_server import dice
+from .hit_type import HitType
 
 
 class Action:
@@ -35,3 +36,24 @@ class Action:
 
     def get_targets(self):
         return self.targets
+
+    def roll_to_hit(self, target):
+        # a natural 20 is always a hit, a critical hit
+        # a natural 1 is always a miss
+        # if modified roll >= AC its a hit
+        roll = dice.d20()
+        if roll is 20:
+            return HitType.CRITICAL_HIT
+        elif roll is 1:
+            return HitType.CRITICAL_MISS
+        else:
+            if roll + self.to_hit >= target.get_ac():
+                return HitType.HIT
+        return HitType.MISS
+
+    def roll_damage(self, target):
+        # roll damage and apply to target
+        dmg = dice.roll(self.dmg)
+        target.apply_damage(dmg, self.dmg_type)
+
+

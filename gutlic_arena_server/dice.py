@@ -21,10 +21,6 @@ def roll_dice(amount, dice, plus):
     return total
 
 
-def roll_hp(hd):
-    return 5
-
-
 def d20():
     return _random_int(1, 20)
 

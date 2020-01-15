@@ -23,3 +23,12 @@ class TestArena(unittest.TestCase):
             a.determine_initiative_order()
             self.assertIsInstance(a.get_init_order()[0], Goblin)
             self.assertIsInstance(a.get_init_order()[1], Orc)
+
+    def test_get_opposing_factions(self):
+        f1 = Faction('Goblins', [Goblin()])
+        f2 = Faction('Orcs', [Orc()])
+        f3 = Faction('More Bad Orcs', [Orc()])
+        a = Arena([f1, f2, f3])
+        opposing = a.get_opposing_factions(f1)
+        self.assertNotIn(f1, opposing)
+

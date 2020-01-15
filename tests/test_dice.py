@@ -1,9 +1,11 @@
 import unittest
 from unittest.mock import patch
 from gutlic_arena_server import dice
+from tests.dice_side_effects import set_values
+from tests.dice_side_effects import value
 
 
-class TestMonster(unittest.TestCase):
+class TestDice(unittest.TestCase):
 
     def test_random_int(self):
         r = dice._random_int(1, 4)
@@ -29,6 +31,15 @@ class TestMonster(unittest.TestCase):
     def test_hd_again(self):
         hp = dice.roll('2D6')
         self.assertTrue(2 <= hp <= 12)
+
+    """Really this is just to be sure I can simulate a set of dice rolls, not just a single one. Also ensure I get the order I want."""
+    def test_side_effects(self):
+        set_values([20,15,10,3])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(dice.d20(), 20)
+            self.assertEqual(dice.d20(), 15)
+            self.assertEqual(dice.d20(), 10)
+            self.assertEqual(dice.d20(), 3)
 
 
 if __name__ == '__main__':
