@@ -91,6 +91,7 @@ class TestMonster(unittest.TestCase):
         self.assertTrue(g.target is not None)
         self.assertIn(g.target, [o1, o2, o3])
 
+    # TODO: move to action
     def test_roll_to_hit(self):
         s = Scimitar()
         o = Orc()
@@ -99,6 +100,7 @@ class TestMonster(unittest.TestCase):
             roll = s.roll_to_hit(o)
             self.assertEqual(roll, HitType.MISS)
 
+    # TODO: move to action
     def test_roll_to_hit_critical(self):
         s = Scimitar()
         o = Orc()
@@ -107,6 +109,7 @@ class TestMonster(unittest.TestCase):
             roll = s.roll_to_hit(o)
             self.assertEqual(roll, HitType.CRITICAL_HIT)
 
+    # TODO: move to action
     def test_roll_damage(self):
         s = Scimitar()
         o = Orc()

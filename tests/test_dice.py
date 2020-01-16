@@ -3,6 +3,7 @@ from unittest.mock import patch
 from gutlic_arena_server import dice
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
+from gutlic_arena_server.actions.hit_type import HitType
 
 
 class TestDice(unittest.TestCase):
@@ -32,7 +33,7 @@ class TestDice(unittest.TestCase):
         hp = dice.roll('2D6')
         self.assertTrue(2 <= hp <= 12)
 
-    """Really this is just to be sure I can simulate a set of dice rolls, not just a single one. Also ensure I get the order I want."""
+    """Really this is just to be sure I can simulate a set of dice rolls, not just a single one."""
     def test_side_effects(self):
         set_values([20,15,10,3])
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
@@ -40,6 +41,11 @@ class TestDice(unittest.TestCase):
             self.assertEqual(dice.d20(), 15)
             self.assertEqual(dice.d20(), 10)
             self.assertEqual(dice.d20(), 3)
+
+    def test_critical_hit(self):
+        set_values([8,8])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(dice.roll_damage('1d8 + 2', HitType.CRITICAL_HIT), 18)
 
 
 if __name__ == '__main__':

@@ -51,9 +51,10 @@ class Action:
                 return HitType.HIT
         return HitType.MISS
 
-    def roll_damage(self, target):
+    def roll_damage(self, target, hit_type=HitType.HIT):
         # roll damage and apply to target
-        dmg = dice.roll(self.dmg)
-        target.apply_damage(dmg, self.dmg_type)
+        if hit_type is HitType.CRITICAL_HIT or hit_type is HitType.HIT:
+            dmg = dice.roll_damage(self.dmg, hit_type)
+            target.apply_damage(dmg, self.dmg_type)
 
 
