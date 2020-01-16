@@ -42,9 +42,9 @@ class Action:
         # a natural 1 is always a miss
         # if modified roll >= AC its a hit
         roll = dice.d20()
-        if roll is 20:
+        if roll == 20:
             return HitType.CRITICAL_HIT
-        elif roll is 1:
+        elif roll == 1:
             return HitType.CRITICAL_MISS
         else:
             if roll + self.to_hit >= target.get_ac():
