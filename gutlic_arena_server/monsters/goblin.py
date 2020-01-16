@@ -16,9 +16,10 @@ class Goblin(Monster):
 
     def take_turn(self, arena):
         # TODO: select action: attack, flee, etc
+        self.arena = arena
         self.attack()
 
-    def attack(self, arena):
+    def attack(self):
         # assuming to attack, select target then select the weapon
         self.select_target(TargetStrategy.STICKY_RANDOM)
         action = self.select_action(self.target)

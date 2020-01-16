@@ -26,6 +26,7 @@ class Monster:
         # game time attributes
         self.target = None
         self.state = EntityState.NORMAL
+        self.arena = None
 
     def get_name(self):
         return self.monsterName
