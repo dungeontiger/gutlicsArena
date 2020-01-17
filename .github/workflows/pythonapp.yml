@@ -1,4 +1,4 @@
-name: Build and Test Gutlic's Arena Server
+name: build_test
 
 on: [push]
 
