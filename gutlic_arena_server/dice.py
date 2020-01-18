@@ -1,5 +1,6 @@
 import random, re
 from .actions.hit_type import HitType
+from .roll_type import RollType
 
 
 def roll(dice_str):
@@ -29,7 +30,11 @@ def roll_dice(amount, dice, plus):
     return total
 
 
-def d20():
+def d20(roll_type=RollType.NORMAL):
+    if roll_type is RollType.ADVANTAGE:
+        return max(_random_int(1, 20), _random_int(1, 20))
+    elif roll_type is RollType.DISADVANTAGE:
+        return min(_random_int(1, 20), _random_int(1, 20))
     return _random_int(1, 20)
 
 

@@ -4,6 +4,7 @@ from gutlic_arena_server import dice
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
 from gutlic_arena_server.actions.hit_type import HitType
+from gutlic_arena_server.roll_type import RollType
 
 
 class TestDice(unittest.TestCase):
@@ -46,6 +47,16 @@ class TestDice(unittest.TestCase):
         set_values([8,8])
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(dice.roll_damage('1d8 + 2', HitType.CRITICAL_HIT), 18)
+
+    def test_advantage(self):
+        set_values([10, 15])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(dice.d20(RollType.ADVANTAGE), 15)
+
+    def test_disadvantage(self):
+        set_values([10, 15])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(dice.d20(RollType.DISADVANTAGE), 10)
 
 
 if __name__ == '__main__':
