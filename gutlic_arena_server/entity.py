@@ -41,22 +41,22 @@ class Entity:
         return self.cha
 
     def get_str_mod(self):
-        return self._calc_stat_mod(self.str)
+        return self._calc_stat_mod(self.get_str())
 
     def get_dex_mod(self):
-        return self._calc_stat_mod(self.dex)
+        return self._calc_stat_mod(self.get_dex())
 
     def get_con_mod(self):
-        return self._calc_stat_mod(self.con)
+        return self._calc_stat_mod(self.get_con())
 
     def get_int_mod(self):
-        return self._calc_stat_mod(self.int)
+        return self._calc_stat_mod(self.get_int())
 
     def get_wis_mod(self):
-        return self._calc_stat_mod(self.wis)
+        return self._calc_stat_mod(self.get_wis())
 
     def get_cha_mod(self):
-        return self._calc_stat_mod(self.cha)
+        return self._calc_stat_mod(self.get_cha())
 
     def get_ac(self):
         return self.ac

@@ -1,10 +1,10 @@
-"""Fighter Class"""
+"""Rogue Class"""
 from .player_class import Class
 
 
-class Fighter(Class):
+class Rogue(Class):
     def __init__(self):
-        super(Fighter, self).__init__('Fighter', 10)
+        super(Rogue, self).__init__('Rogue', 8)
 
     def __str__(self):
         return self.name

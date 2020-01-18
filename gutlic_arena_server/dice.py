@@ -23,7 +23,7 @@ def roll_damage(dice_str, hit_type=HitType.HIT):
     return roll_dice(a, d, mod)
 
 
-def roll_dice(amount, dice, plus):
+def roll_dice(amount, dice, plus=0):
     total = plus
     for i in range(0, amount):
         total += _random_int(1, dice)
