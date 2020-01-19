@@ -5,7 +5,7 @@ from gutlic_arena_server.arena import Arena
 from gutlic_arena_server.faction import Faction
 from gutlic_arena_server.monsters.goblin import Goblin
 from gutlic_arena_server.monsters.orc import Orc
-from gutlic_arena_server.monsters.entity_state import EntityState
+from gutlic_arena_server.types.entity_state import EntityState
 
 
 class TestArena(unittest.TestCase):

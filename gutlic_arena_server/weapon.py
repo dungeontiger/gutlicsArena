@@ -1,4 +1,4 @@
-from .weapon_type import WeaponType
+from gutlic_arena_server.types.weapon_type import WeaponType
 from .actions.damage_type import DamageType
 
 
@@ -39,6 +39,12 @@ class Weapon:
         self.special = special
         self.range = _range
         self.long_range = long_range
+
+    def is_melee(self):
+        return self.type is WeaponType.MARTIAL_MELEE or self.type is WeaponType.SIMPLE_MELEE
+
+    def is_ranged(self):
+        return self.type is WeaponType.SIMPLE_RANGED or self.type is WeaponType.MARTIAL_RANGED
 
     def get_name(self):
         return self.name

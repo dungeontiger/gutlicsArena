@@ -1,7 +1,7 @@
 """Human race"""
-from .race import Race
-from .size import Size
-from .languages import Languages
+from gutlic_arena_server.players.race import Race
+from gutlic_arena_server.types.size import Size
+from gutlic_arena_server.types.languages import Languages
 
 class Human(Race):
     def __init__(self):

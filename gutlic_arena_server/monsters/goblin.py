@@ -1,5 +1,5 @@
 from .monster import Monster
-from .target_strategy import TargetStrategy
+from gutlic_arena_server.types.target_strategy import TargetStrategy
 from gutlic_arena_server.actions.scimitar import Scimitar
 from gutlic_arena_server.actions.hit_type import HitType
 

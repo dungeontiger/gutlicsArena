@@ -4,10 +4,9 @@ from unittest.mock import patch
 from gutlic_arena_server.players.character_builder import CharacterBuilder
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
-from gutlic_arena_server.players.fighter import Fighter
-from gutlic_arena_server.players.rogue import Rogue
-from gutlic_arena_server.players.human import Human
-from gutlic_arena_server.players.halfling import Halfling
+from gutlic_arena_server.players.classes.fighter import Fighter
+from gutlic_arena_server.players.races.human import Human
+from gutlic_arena_server.players.races.halfling import Halfling
 
 
 class TestCharacterBuilder(unittest.TestCase):

@@ -1,8 +1,8 @@
 from gutlic_arena_server import dice
-from gutlic_arena_server.players.fighter import Fighter
-from gutlic_arena_server.players.rogue import Rogue
-from gutlic_arena_server.players.human import Human
-from gutlic_arena_server.players.halfling import Halfling
+from gutlic_arena_server.players.classes.fighter import Fighter
+from gutlic_arena_server.players.classes.rogue import Rogue
+from gutlic_arena_server.players.races.human import Human
+from gutlic_arena_server.players.races.halfling import Halfling
 """Class to help with building characters"""
 
 

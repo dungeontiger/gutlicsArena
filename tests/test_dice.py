@@ -4,7 +4,7 @@ from gutlic_arena_server import dice
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
 from gutlic_arena_server.actions.hit_type import HitType
-from gutlic_arena_server.roll_type import RollType
+from gutlic_arena_server.types.roll_type import RollType
 
 
 class TestDice(unittest.TestCase):

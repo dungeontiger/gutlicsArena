@@ -1,13 +1,13 @@
 import random, re
 from .actions.hit_type import HitType
-from .roll_type import RollType
+from gutlic_arena_server.types.roll_type import RollType
 
 
 def roll(dice_str):
     return roll_damage(dice_str)
 
 
-def roll_damage(dice_str, hit_type=HitType.HIT):
+def roll_damage(dice_str, hit_type=HitType.HIT, modifier=0):
     # dice string is in the format 2d6 + 3, spaces and case of the d not relevant
     m = re.search(r'(\d*)[dD](\d*)\s*([+-]\s*\d*)?', dice_str)
     # these two are required, so 1d6 is valid, d6 is not
@@ -20,7 +20,7 @@ def roll_damage(dice_str, hit_type=HitType.HIT):
     mod = 0
     if m.group(3) is not None:
         mod = int(m.group(3).replace(' ', ''))
-    return roll_dice(a, d, mod)
+    return roll_dice(a, d, mod + modifier)
 
 
 def roll_dice(amount, dice, plus=0):

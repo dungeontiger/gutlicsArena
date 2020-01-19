@@ -1,5 +1,5 @@
 """Rogue Class"""
-from .player_class import PlayerClass
+from gutlic_arena_server.players.player_class import PlayerClass
 
 
 class Rogue(PlayerClass):

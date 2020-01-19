@@ -1,7 +1,7 @@
 import random
-from .target_strategy import TargetStrategy
+from gutlic_arena_server.types.target_strategy import TargetStrategy
 from gutlic_arena_server import dice
-from .entity_state import EntityState
+from gutlic_arena_server.types.entity_state import EntityState
 from gutlic_arena_server.entity import Entity
 
 

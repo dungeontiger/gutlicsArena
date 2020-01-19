@@ -1,4 +1,4 @@
-from .size import Size
+from gutlic_arena_server.types.size import Size
 """"Base class for player races."""
 
 
@@ -13,7 +13,8 @@ class Race:
         self.cha = _cha
         self.size = size
         self.speed = speed
-        self.languages = []
+        self.languages = languages
+        self.traits = []
 
     def get_str_mod(self):
         return self.str
@@ -44,6 +45,9 @@ class Race:
 
     def get_languages(self):
         return self.languages
+
+    def add_traits(self, traits):
+        self.traits.extend(traits)
 
     def __str__(self):
         return self.name

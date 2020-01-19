@@ -1,4 +1,4 @@
-from .monsters.entity_state import EntityState
+from gutlic_arena_server.types.entity_state import EntityState
 """This represents the arena or the environment.  Mostly it will be the participants"""
 
 

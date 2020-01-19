@@ -7,8 +7,8 @@ from gutlic_arena_server.actions.scimitar import Scimitar
 from gutlic_arena_server.actions.hit_type import HitType
 from gutlic_arena_server.faction import Faction
 from gutlic_arena_server.arena import Arena
-from gutlic_arena_server.monsters.target_strategy import TargetStrategy
-from gutlic_arena_server.monsters.entity_state import EntityState
+from gutlic_arena_server.types.target_strategy import TargetStrategy
+from gutlic_arena_server.types.entity_state import EntityState
 
 """Tests the base class Monster through a Goblin instance"""
 
