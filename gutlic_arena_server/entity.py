@@ -5,7 +5,7 @@ from . import dice
 
 
 class Entity:
-    def __init__(self, name='', s=0, d=0, c=0, i=0, w=0, h=0):
+    def __init__(self, name='', s=0, d=0, c=0, i=0, w=0, h=0, languages=[]):
         self.name = name
         self.str = s
         self.dex = d
@@ -18,6 +18,7 @@ class Entity:
         self.cur_hp = 0
         self.faction = None
         self.arena = None
+        self.languages = languages
 
     def get_name(self):
         return self.name
@@ -72,6 +73,9 @@ class Entity:
 
     def get_faction(self):
         return self.faction
+
+    def get_languages(self):
+        return self.langauges
 
     def roll_initiative(self):
         # initiative is d20 plus dex mod

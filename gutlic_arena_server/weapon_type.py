@@ -1,5 +1,6 @@
 import enum
 
+
 class WeaponType (enum.Enum):
     UNKNOWN = 0
     SIMPLE_MELEE = 1

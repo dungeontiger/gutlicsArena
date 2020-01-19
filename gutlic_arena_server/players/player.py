@@ -1,7 +1,7 @@
 """Class for players"""
 from gutlic_arena_server.entity import Entity
 from gutlic_arena_server.players.race import Race
-from gutlic_arena_server.players.player_class import Class
+from gutlic_arena_server.players.player_class import PlayerClass
 
 
 class Player(Entity):
@@ -18,6 +18,7 @@ class Player(Entity):
         # first level get max hp which is your hit dice type
         self.hp = _class.get_hd() + self.get_con_mod()
         self.cur_hp = self.hp
+        self.add_languages(race.get_languages())
 
     # stats have racial mods, always calculate to allow for race to change in the future (reincarnate?, wish?)
     def get_str(self):
@@ -37,6 +38,9 @@ class Player(Entity):
 
     def get_cha(self):
         return self.cha + self.race.get_cha_mod()
+
+    def add_languages(self, language):
+        self.languages.extend(language)
 
     def __str__(self):
         return '{0}, {1} {2}'.format(self.name, self.race.get_name(), self._class.get_name())

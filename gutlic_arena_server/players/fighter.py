@@ -1,8 +1,8 @@
 """Fighter Class"""
-from .player_class import Class
+from .player_class import PlayerClass
 
 
-class Fighter(Class):
+class Fighter(PlayerClass):
     def __init__(self):
         super(Fighter, self).__init__('Fighter', 10)
 
