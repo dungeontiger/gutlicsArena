@@ -1,5 +1,5 @@
 from gutlic_arena_server import dice
-from .hit_type import HitType
+from gutlic_arena_server.types.hit_type import HitType
 
 
 class Action:

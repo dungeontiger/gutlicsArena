@@ -1,5 +1,5 @@
 import random, re
-from .actions.hit_type import HitType
+from gutlic_arena_server.types.hit_type import HitType
 from gutlic_arena_server.types.roll_type import RollType
 
 

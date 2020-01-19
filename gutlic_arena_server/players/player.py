@@ -1,9 +1,9 @@
 """Class for players"""
 from gutlic_arena_server.entity import Entity
-from gutlic_arena_server.players.race import Race
-from gutlic_arena_server.players.player_class import PlayerClass
 from gutlic_arena_server import dice
-from gutlic_arena_server.actions.hit_type import HitType
+from gutlic_arena_server.types.hit_type import HitType
+from gutlic_arena_server import to_hit_engine
+from gutlic_arena_server import damage_engine
 
 
 class Player(Entity):
@@ -21,14 +21,23 @@ class Player(Entity):
         self.hp = _class.get_hd() + self.get_con_mod()
         self.cur_hp = self.hp
         self.add_languages(race.get_languages())
+        self.add_languages(_class.get_languages())
         self.weapons = []
         self.proficiency = 2
 
+    def has_trait(self, trait):
+        # traits currently come from the class or the race
+        return self.race.has_trait(trait) or self._class.has_trait(trait)
+
     # the player takes the attack action
     def attack_action(self, weapon, target):
-        hit = self._roll_to_hit(weapon, target)
-        if hit is HitType.HIT or HitType.CRITICAL_HIT:
-            self._roll_damage(weapon, target, hit)
+        hit = to_hit_engine.roll_to_hit(self, target, weapon, self.arena)
+        damage = damage_engine.roll_damage(self, target, weapon, hit, self.arena)
+        target.apply_damage(damage)
+
+    def get_proficiency_bonus(self, weapon):
+        # TODO: deal with weapon proficiencies
+        return self.proficiency
 
     # stats have racial mods, always calculate to allow for race to change in the future (reincarnate?, wish?)
     def get_str(self):
@@ -54,42 +63,6 @@ class Player(Entity):
 
     def add_weapon(self, weapon):
         self.weapons.append(weapon)
-
-    def _roll_to_hit(self, weapon, target):
-        # determine the modifier, skill + proficiency
-        hit = HitType.MISS
-        # TODO: only if proficient
-        mod = self.proficiency
-        if weapon.get_finesse():
-            mod = mod + max(self.get_dex_mod(), self.get_str_mod())
-        elif weapon.is_melee():
-            mod = mod + self.get_str_mod()
-        elif weapon.is_ranged():
-            mod = mod + self.get_dex_mod()
-        # TODO: determine advantage / disadvantage
-        # roll to hit
-        roll = dice.d20()
-        # TODO: luck of the halfling
-        if roll == 1:
-            roll = dice.d20()
-        if roll == 20:
-            hit = HitType.CRITICAL_HIT
-        elif roll == 1:
-            hit = HitType.CRITICAL_MISS
-        elif roll + mod >= target.get_ac():
-            hit = HitType.HIT
-        return hit
-
-    def _roll_damage(self, weapon, target, hit):
-        mod = 0
-        if weapon.get_finesse():
-            mod = mod + max(self.get_dex_mod(), self.get_str_mod())
-        elif weapon.is_melee():
-            mod = mod + self.get_str_mod()
-        elif weapon.is_ranged():
-            mod = mod + self.get_dex_mod()
-        damage = dice.roll_damage(weapon.get_damage(), hit, mod)
-        target.apply_damage(damage)
 
     def __str__(self):
         return '{0}, {1} {2}'.format(self.name, self.race.get_name(), self._class.get_name())

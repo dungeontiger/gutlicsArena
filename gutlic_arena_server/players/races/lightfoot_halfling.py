@@ -4,6 +4,7 @@ from gutlic_arena_server.types.trait import Trait
 
 class LightfootHalfling(Halfling):
     def __init__(self):
+        super(LightfootHalfling, self).__init__()
         self.cha = self.cha + 1
         self.name = 'Lightfoot Halfling'
         self.add_traits([Trait.NATURALLY_STEALTHY])

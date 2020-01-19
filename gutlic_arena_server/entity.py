@@ -19,6 +19,7 @@ class Entity:
         self.faction = None
         self.arena = None
         self.languages = languages
+        self.traits = []
 
     def get_name(self):
         return self.name
@@ -76,6 +77,9 @@ class Entity:
 
     def get_languages(self):
         return self.langauges
+
+    def has_trait(self, trait):
+        return trait in self.traits
 
     def roll_initiative(self):
         # initiative is d20 plus dex mod

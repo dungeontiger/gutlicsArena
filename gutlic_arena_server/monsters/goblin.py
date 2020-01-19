@@ -1,7 +1,7 @@
 from .monster import Monster
 from gutlic_arena_server.types.target_strategy import TargetStrategy
 from gutlic_arena_server.actions.scimitar import Scimitar
-from gutlic_arena_server.actions.hit_type import HitType
+from gutlic_arena_server.types.hit_type import HitType
 
 # TODO: deal with short bow and shield
 # TODO: speed, alignment, size, skills, senses, languages, CR
@@ -19,6 +19,7 @@ class Goblin(Monster):
         self.arena = arena
         self.attack()
 
+    # TODO: use to hit and damage engines
     def attack(self):
         # assuming to attack, select target then select the weapon
         self.select_target(TargetStrategy.STICKY_RANDOM)

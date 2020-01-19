@@ -49,5 +49,8 @@ class Race:
     def add_traits(self, traits):
         self.traits.extend(traits)
 
+    def has_trait(self, trait):
+        return trait in self.traits
+
     def __str__(self):
         return self.name

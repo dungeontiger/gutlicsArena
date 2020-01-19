@@ -43,3 +43,8 @@ class TestCharacterBuilder(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+"""
+TODO:
+Test negative stats modifiers
+"""

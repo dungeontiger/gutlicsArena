@@ -52,6 +52,7 @@ class Weapon:
     def get_type(self):
         return self.type
 
+    # TODO: need to implement most of these features, reach, light, etc...
     def get_cost(self):
         return self.cost
 

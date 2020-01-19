@@ -8,7 +8,7 @@ from gutlic_arena_server.actions.damage_type import DamageType
 from gutlic_arena_server.monsters.orc import Orc
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
-from gutlic_arena_server.actions.hit_type import HitType
+from gutlic_arena_server.types.hit_type import HitType
 
 
 class TestActions(unittest.TestCase):
