@@ -36,8 +36,12 @@ class Player(Entity):
         target.apply_damage(damage)
 
     def get_proficiency_bonus(self, weapon):
-        # TODO: deal with weapon proficiencies
-        return self.proficiency
+        if self._class.is_proficient(weapon):
+            return self.proficiency
+        return 0
+
+    def is_proficient(self, weapon):
+        return self._class.is_proficient(weapon)
 
     # stats have racial mods, always calculate to allow for race to change in the future (reincarnate?, wish?)
     def get_str(self):

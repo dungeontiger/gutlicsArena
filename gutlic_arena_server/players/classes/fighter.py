@@ -1,10 +1,16 @@
 """Fighter Class"""
 from gutlic_arena_server.players.player_class import PlayerClass
+from gutlic_arena_server.types.weapon_type import WeaponType
 
 
 class Fighter(PlayerClass):
     def __init__(self):
         super(Fighter, self).__init__('Fighter', 10)
+        # fighters proficient in all weapons
+        self.add_weapon_proficiencies([WeaponType.SIMPLE_MELEE,
+                                       WeaponType.SIMPLE_RANGED,
+                                       WeaponType.MARTIAL_MELEE,
+                                       WeaponType.MARTIAL_RANGED])
 
     def __str__(self):
         return self.name
