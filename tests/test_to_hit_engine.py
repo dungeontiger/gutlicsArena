@@ -9,6 +9,7 @@ from gutlic_arena_server.weapons import weapons
 from gutlic_arena_server.players.player import Player
 from gutlic_arena_server.players.races.human import Human
 from gutlic_arena_server.players.classes.fighter import Fighter
+from gutlic_arena_server.players.classes.rogue import Rogue
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
 
@@ -116,6 +117,41 @@ class TestToHitEngine(unittest.TestCase):
         target = Goblin()
         attack = weapons['Dagger']
         set_values([10])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, attack, None), HitType.MISS)
+
+    def test_proficieny_matters(self):
+        # makes sure to use the higher mod to be able to hit
+        # goblin AC is 15
+        # proficiency is +2
+        # rolls a 13
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], StoutHalfling(), Fighter())
+        target = Goblin()
+        attack = weapons['Dagger']
+        set_values([13])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, attack, None), HitType.HIT)
+
+    def test_proficieny_matters_rogue(self):
+        # makes sure to use the higher mod to be able to hit
+        # goblin AC is 15
+        # proficiency is +2
+        # rolls a 13
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Rogue())
+        target = Goblin()
+        attack = weapons['Rapier']
+        set_values([13])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, attack, None), HitType.HIT)
+
+    def test_proficieny_matters_not_rogue(self):
+        # makes sure to use the higher mod to be able to hit
+        # goblin AC is 15
+        # rolls a 13
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Rogue())
+        target = Goblin()
+        attack = weapons['Maul']
+        set_values([13])
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(roll_to_hit(attacker, target, attack, None), HitType.MISS)
 
