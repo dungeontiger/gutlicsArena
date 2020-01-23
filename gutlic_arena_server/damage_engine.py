@@ -14,4 +14,8 @@ def roll_damage(attacker, target, attack, hit, arena):
         elif attack.is_ranged():
             dmg_mod += attacker.get_dex_mod()
         damage = dice.roll_damage(attack.get_damage(), hit, dmg_mod)
+
+    # damage can never be less than 0
+    if damage < 0:
+        return 0
     return damage

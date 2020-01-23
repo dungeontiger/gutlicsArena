@@ -1,4 +1,5 @@
-import json, os
+import json
+import os
 from .weapon import Weapon
 from .types.weapon_type import WeaponType
 from .types.damage_type import DamageType

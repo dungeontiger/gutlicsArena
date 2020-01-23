@@ -83,6 +83,13 @@ class TestDamageEngine(unittest.TestCase):
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(roll_damage(attacker, None, attack, HitType.CRITICAL_HIT, None), 18)
 
+    def test_negative_damage(self):
+        attacker = Player('Bob', [3, 3, 10, 10, 10, 10], Human(), Fighter())
+        set_values([1])
+        attack = weapons[WeaponId.DAGGER]
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_damage(attacker, None, attack, HitType.HIT, None), 0)
+
 
 if __name__ == '__main__':
     unittest.main()
