@@ -1,9 +1,8 @@
 """Class for players"""
 from gutlic_arena_server.entity import Entity
-from gutlic_arena_server import dice
-from gutlic_arena_server.types.hit_type import HitType
 from gutlic_arena_server import to_hit_engine
 from gutlic_arena_server import damage_engine
+from gutlic_arena_server.types.armor_type import ArmorType
 
 
 class Player(Entity):
@@ -24,6 +23,8 @@ class Player(Entity):
         self.add_languages(_class.get_languages())
         self.weapons = []
         self.proficiency = 2
+        self.armor = None
+        self.shield = None
 
     def has_trait(self, trait):
         # traits currently come from the class or the race
@@ -67,6 +68,34 @@ class Player(Entity):
 
     def add_weapon(self, weapon):
         self.weapons.append(weapon)
+
+    def set_armor(self, armor):
+        self.armor = armor
+
+    def get_armor(self):
+        return self.armor
+
+    def set_shield(self, shield):
+        if shield.get_type() == ArmorType.SHIELD:
+            self.shield = shield
+
+    def get_shield(self):
+        return self.shield
+
+    def get_ac(self):
+        ac = 10
+        if self.armor is not None:
+            ac = self.armor.get_ac()
+            if self.armor.get_max_dex_mod() == -1:
+                ac += self.get_dex_mod()
+            elif self.armor.get_max_dex_mod() > 0:
+                ac += max(self.get_dex_mod(), self.armor.get_max_dex_mod())
+        else:
+            ac += self.get_dex_mod()
+
+        if self.shield is not None:
+            ac += self.shield.get_ac()
+        return ac
 
     def __str__(self):
         return '{0}, {1} {2}'.format(self.name, self.race.get_name(), self._class.get_name())

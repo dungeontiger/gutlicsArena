@@ -8,6 +8,8 @@ from tests.dice_side_effects import value
 from gutlic_arena_server.players.classes.fighter import Fighter
 from gutlic_arena_server.players.races.human import Human
 from gutlic_arena_server.players.races.halfling import Halfling
+from gutlic_arena_server.types.armor_id import ArmorId
+from gutlic_arena_server.armors import armors
 
 
 class TestPlayer(unittest.TestCase):
@@ -47,6 +49,26 @@ class TestPlayer(unittest.TestCase):
             stats, _ = CharacterBuilder.roll_stats()
             player = Player('Radrick', stats, Human(), Fighter())
             self.assertEqual(14, player.get_cur_hp())
+
+    def test_ac_naked(self):
+        player = Player('Radrick', [10, 18, 10, 10, 10, 10], Human(), Fighter())
+        self.assertEqual(14, player.get_ac())
+
+    def test_ac_naked_shield(self):
+        player = Player('Radrick', [10, 10, 10, 10, 10, 10], Human(), Fighter())
+        player.set_shield(armors[ArmorId.SHIELD])
+        self.assertEqual(player.get_ac(), 12)
+
+    def test_ac_heavy_high_dex(self):
+        player = Player('Radrick', [10, 18, 10, 10, 10, 10], Human(), Fighter())
+        player.set_shield(armors[ArmorId.SHIELD])
+        player.set_armor(armors[ArmorId.PLATE])
+        self.assertEqual(20, player.get_ac())
+
+    def test_medium_armor_dex(self):
+        player = Player('Radrick', [10, 18, 10, 10, 10, 10], Human(), Fighter())
+        player.set_armor(armors[ArmorId.HIDE])
+        self.assertEqual(16, player.get_ac())
 
 
 if __name__ == '__main__':
