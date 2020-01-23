@@ -1,6 +1,6 @@
 from .monster import Monster
 from gutlic_arena_server.types.target_strategy import TargetStrategy
-from gutlic_arena_server.actions.scimitar import Scimitar
+from gutlic_arena_server.monsters.actions.scimitar import Scimitar
 from gutlic_arena_server.types.hit_type import HitType
 
 # TODO: deal with short bow and shield

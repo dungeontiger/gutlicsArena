@@ -5,7 +5,7 @@ from gutlic_arena_server.types.hit_type import HitType
 class Action:
     def __init__(self, _name, _type, to_hit, dmg, dmg_type, reach, targets):
         self.name = _name
-        self.type = _type
+        self._type = _type
         self.to_hit = to_hit
         self.dmg = dmg
         self.dmg_type = dmg_type
@@ -16,7 +16,7 @@ class Action:
         return self.name
 
     def get_type(self):
-        return self.type
+        return self._type
 
     def get_to_hit(self):
         return self.to_hit
@@ -56,5 +56,3 @@ class Action:
         if hit_type is HitType.CRITICAL_HIT or hit_type is HitType.HIT:
             dmg = dice.roll_damage(self.dmg, hit_type)
             target.apply_damage(dmg, self.dmg_type)
-
-

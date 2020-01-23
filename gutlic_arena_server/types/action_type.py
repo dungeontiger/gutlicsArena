@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class WeaponType(Enum):
+class ActionType(Enum):
     UNKNOWN = 0
     MELEE = 1
     RANGED = 2

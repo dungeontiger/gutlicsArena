@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch
 
-from gutlic_arena_server.actions.scimitar import Scimitar
-from gutlic_arena_server.actions.greataxe import Greataxe
-from gutlic_arena_server.actions.weapon_type import WeaponType
+from gutlic_arena_server.monsters.actions.scimitar import Scimitar
+from gutlic_arena_server.monsters.actions.greataxe import Greataxe
+from gutlic_arena_server.types.action_type import ActionType
 from gutlic_arena_server.types.damage_type import DamageType
 from gutlic_arena_server.monsters.orc import Orc
 from tests.dice_side_effects import set_values
@@ -24,7 +24,7 @@ class TestActions(unittest.TestCase):
     def test_scimitar_stats(self):
         s = Scimitar()
         self.assertEqual(s.get_name(), 'Scimitar')
-        self.assertEqual(s.get_type(), WeaponType.MELEE)
+        self.assertEqual(s.get_type(), ActionType.MELEE)
         self.assertEqual(s.get_to_hit(), 4)
         self.assertEqual(s.get_dmg_str(), '1d6+2')
         self.assertTrue(3 <= s.get_dmg() <= 14)

@@ -1,5 +1,5 @@
 from .monster import Monster
-from gutlic_arena_server.actions.greataxe import Greataxe
+from gutlic_arena_server.monsters.actions.greataxe import Greataxe
 from gutlic_arena_server.types.hit_type import HitType
 from gutlic_arena_server.types.target_strategy import TargetStrategy
 

@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from gutlic_arena_server.monsters.goblin import Goblin
 from gutlic_arena_server.monsters.orc import Orc
-from gutlic_arena_server.actions.scimitar import Scimitar
+from gutlic_arena_server.monsters.actions.scimitar import Scimitar
 from gutlic_arena_server.types.hit_type import HitType
 from gutlic_arena_server.faction import Faction
 from gutlic_arena_server.arena import Arena
