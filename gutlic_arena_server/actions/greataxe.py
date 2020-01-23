@@ -1,6 +1,6 @@
 from .action import Action
 from .weapon_type import WeaponType
-from .damage_type import DamageType
+from gutlic_arena_server.types.damage_type import DamageType
 
 
 class Greataxe(Action):

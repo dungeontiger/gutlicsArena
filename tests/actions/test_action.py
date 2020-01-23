@@ -4,7 +4,7 @@ from unittest.mock import patch
 from gutlic_arena_server.actions.scimitar import Scimitar
 from gutlic_arena_server.actions.greataxe import Greataxe
 from gutlic_arena_server.actions.weapon_type import WeaponType
-from gutlic_arena_server.actions.damage_type import DamageType
+from gutlic_arena_server.types.damage_type import DamageType
 from gutlic_arena_server.monsters.orc import Orc
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value

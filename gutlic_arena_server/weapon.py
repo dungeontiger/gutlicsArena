@@ -1,31 +1,15 @@
 from gutlic_arena_server.types.weapon_type import WeaponType
-from .actions.damage_type import DamageType
 
 
 class Weapon:
-    def __init__(self, name, _type, cost, damage, damage_type, weight, light, finesse, thrown, two_handed,
+    def __init__(self, name, _id, _type, cost, damage, damage_type, weight, light, finesse, thrown, two_handed,
                  versatile, ammo, reach, heavy, loading, special, _range, long_range):
         self.name = name
-        if _type == 'simple_melee':
-            self.type = WeaponType.SIMPLE_MELEE
-        elif _type == 'simple_ranged':
-            self.type = WeaponType.SIMPLE_RANGED
-        elif _type == 'martial_ranged':
-            self.type = WeaponType.MARTIAL_RANGED
-        elif _type == 'martial_melee':
-            self.type = WeaponType.MARTIAL_MELEE
-        else:
-            self.type = WeaponType.UNKNOWN
+        self._id = _id
+        self._type = _type
         self.cost = cost
         self.damage = damage
-        if damage_type == 'bludgeoning':
-            self.damage_type = DamageType.BLUDGEONING
-        elif damage_type == 'piercing':
-            self.damage_type = DamageType.PIERCING
-        elif damage_type == 'slashing':
-            self.damage_type = DamageType.SLASHING
-        else:
-            self.damage_type = DamageType.UNKNOWN
+        self.damage_type = damage_type
         self.weight = weight
         self.light = light
         self.finesse = finesse
@@ -41,16 +25,16 @@ class Weapon:
         self.long_range = long_range
 
     def is_melee(self):
-        return self.type is WeaponType.MARTIAL_MELEE or self.type is WeaponType.SIMPLE_MELEE
+        return self._type is WeaponType.MARTIAL_MELEE or self._type is WeaponType.SIMPLE_MELEE
 
     def is_ranged(self):
-        return self.type is WeaponType.SIMPLE_RANGED or self.type is WeaponType.MARTIAL_RANGED
+        return self._type is WeaponType.SIMPLE_RANGED or self._type is WeaponType.MARTIAL_RANGED
 
     def get_name(self):
         return self.name
 
     def get_type(self):
-        return self.type
+        return self._type
 
     # TODO: need to implement most of these features, reach, light, etc...
     def get_cost(self):
@@ -92,6 +76,7 @@ class Weapon:
     def get_loading(self):
         return self.loading
 
+    # TODO: special means special rules for this weapon
     def get_special(self):
         return self.special
 
@@ -100,6 +85,9 @@ class Weapon:
 
     def get_long_range(self):
         return self.long_range
+
+    def get_id(self):
+        return self._id
 
     def __str__(self):
         return self.name

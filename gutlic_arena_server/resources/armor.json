@@ -1,0 +1,132 @@
+[
+  {
+    "name": "Padded",
+    "type": "light_armor",
+    "cost": "5gp",
+    "ac": 11,
+    "max_dex_mod": -1,
+    "str_required": 0,
+    "stealth": "disadvantage",
+    "weight": 8
+  },
+  {
+    "name": "Leather",
+    "type": "light_armor",
+    "cost": "10gp",
+    "ac": 11,
+    "max_dex_mod": -1,
+    "str_required": 0,
+    "stealth": "normal",
+    "weight": 10
+  },
+  {
+    "name": "Studded leather",
+    "type": "light_armor",
+    "cost": "45gp",
+    "ac": 12,
+    "max_dex_mod": -1,
+    "str_required": 0,
+    "stealth": "normal",
+    "weight": 13
+  },
+  {
+    "name": "Hide",
+    "type": "medium_armor",
+    "cost": "10gp",
+    "ac": 12,
+    "max_dex_mod": 2,
+    "str_required": 0,
+    "stealth": "normal",
+    "weight": 12
+  },
+  {
+    "name": "Chain shirt",
+    "type": "medium_armor",
+    "cost": "50gp",
+    "ac": 13,
+    "max_dex_mod": 2,
+    "str_required": 0,
+    "stealth": "normal",
+    "weight": 20
+  },
+  {
+    "name": "Scale mail",
+    "type": "medium_armor",
+    "cost": "50gp",
+    "ac": 14,
+    "max_dex_mod": 2,
+    "str_required": 0,
+    "stealth": "disadvantage",
+    "weight": 45
+  },
+  {
+    "name": "Breastplate",
+    "type": "medium_armor",
+    "cost": "400gp",
+    "ac": 14,
+    "max_dex_mod": 2,
+    "str_required": 0,
+    "stealth": "normal",
+    "weight": 20
+  },
+  {
+    "name": "Half plate",
+    "type": "medium_armor",
+    "cost": "750gp",
+    "ac": 15,
+    "max_dex_mod": 2,
+    "str_required": 0,
+    "stealth": "disadvantage",
+    "weight": 40
+  },
+  {
+    "name": "Ring mail",
+    "type": "heavy_armor",
+    "cost": "30gp",
+    "ac": 14,
+    "max_dex_mod": 0,
+    "str_required": 0,
+    "stealth": "disadvantage",
+    "weight": 40
+  },
+  {
+    "name": "Chain mail",
+    "type": "heavy_armor",
+    "cost": "75gp",
+    "ac": 16,
+    "max_dex_mod": 0,
+    "str_required": 13,
+    "stealth": "disadvantage",
+    "weight": 55
+  },
+  {
+    "name": "Splint",
+    "type": "heavy_armor",
+    "cost": "200gp",
+    "ac": 17,
+    "max_dex_mod": 0,
+    "str_required": 15,
+    "stealth": "disadvantage",
+    "weight": 60
+  },
+  {
+    "name": "Plate",
+    "type": "heavy_armor",
+    "cost": "1500gp",
+    "ac": 18,
+    "max_dex_mod": 0,
+    "str_required": 15,
+    "stealth": "disadvantage",
+    "weight": 65
+  },
+  {
+    "name": "Shield",
+    "type": "shield",
+    "cost": "10gp",
+    "ac": 2,
+    "max_dex_mod": -1,
+    "str_required": 0,
+    "stealth": "normal",
+    "weight": 6
+  }
+]
