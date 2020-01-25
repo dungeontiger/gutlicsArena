@@ -6,6 +6,8 @@ from gutlic_arena_server.types.roll_type import RollType
 
 
 def roll_to_hit(attacker, target, attack, arena):
+    # default to miss
+    hit = HitType.MISS
 
     # get proficiency bonus for this weapon
     to_hit_mod = attacker.get_proficiency_bonus(attack)
@@ -20,8 +22,6 @@ def roll_to_hit(attacker, target, attack, arena):
 
     # TODO: determine advantage / disadvantage; flanking, etc.
 
-    # TODO: fighting style archer bonus
-
     roll_type = RollType.NORMAL
     if attacker.wearing_unproficient_armor():
         roll_type = RollType.DISADVANTAGE
@@ -31,14 +31,23 @@ def roll_to_hit(attacker, target, attack, arena):
     if roll == 1 and attacker.has_trait(Trait.LUCKY):
         roll = dice.d20()
 
-    # determine outcome
+    # natural rolls checked before applying modifiers
     if roll == 20:
-        hit = HitType.CRITICAL_HIT
+        return HitType.CRITICAL_HIT
     elif roll == 1:
-        hit = HitType.CRITICAL_MISS
-    elif roll + to_hit_mod >= target.get_ac():
+        return HitType.CRITICAL_MISS
+
+    # fighting style modifications
+    if attacker.has_trait(Trait.FIGHTING_STYLE_ARCHERY) and attack.is_ranged():
+        roll += 2
+
+    # defense fighting style applies to the defender
+    ac_mod = 0
+    if target.has_trait(Trait.FIGHTING_STYLE_DEFENCE) and target.get_armor() is not None:
+        ac_mod += 1
+
+    # determine outcome
+    elif roll + to_hit_mod >= target.get_ac() + ac_mod:
         hit = HitType.HIT
-    else:
-        hit = HitType.MISS
 
     return hit

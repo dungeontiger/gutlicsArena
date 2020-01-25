@@ -7,7 +7,7 @@ def roll(dice_str):
     return roll_damage(dice_str)
 
 
-def roll_damage(dice_str, hit_type=HitType.HIT, modifier=0):
+def roll_damage(dice_str, hit_type=HitType.HIT, modifier=0, reroll_1_2=False):
     # dice string is in the format 2d6 + 3, spaces and case of the d not relevant
     m = re.search(r'(\d*)[dD](\d*)\s*([+-]\s*\d*)?', dice_str)
     # these two are required, so 1d6 is valid, d6 is not
@@ -20,13 +20,16 @@ def roll_damage(dice_str, hit_type=HitType.HIT, modifier=0):
     mod = 0
     if m.group(3) is not None:
         mod = int(m.group(3).replace(' ', ''))
-    return roll_dice(a, d, mod + modifier)
+    return roll_dice(a, d, mod + modifier, reroll_1_2)
 
 
-def roll_dice(amount, dice, plus=0):
+def roll_dice(amount, dice, plus=0, reroll_1_2=False):
     total = plus
     for i in range(0, amount):
-        total += _random_int(1, dice)
+        r = _random_int(1, dice)
+        if (r == 1 or r ==2) and reroll_1_2:
+            r = _random_int(1, dice)
+        total += r
     return total
 
 

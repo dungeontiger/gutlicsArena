@@ -2,6 +2,7 @@
 from gutlic_arena_server.players.player_class import PlayerClass
 from gutlic_arena_server.types.weapon_type import WeaponType
 from gutlic_arena_server.types.armor_type import ArmorType
+from gutlic_arena_server.types.trait import Trait
 
 
 class Fighter(PlayerClass):
@@ -18,18 +19,20 @@ class Fighter(PlayerClass):
                                       ArmorType.LIGHT_ARMOR,
                                       ArmorType.SHIELD])
 
+        # all fighters get second wind
+        self.traits.append(Trait.SECOND_WIND)
+
+    def add_fighting_style(self, style):
+        self.traits.append(style)
+
     def __str__(self):
         return self.name
 
-# TODO: fighting style, second wind
+# TODO:
 
 """
 Fighting styles:
 
-Archery +2 to hit ranged
-Defence +1 to AC when wearing armor
-Dueling +2 to hit if one handed weapon (only one weapon?)
-Great Weapon Fighting reroll 1 or 2 on damage for verstaile or two handed weapons
 Protection When a creature you can see attacks another target within 5 feet of you can force disadvantage on them; 
     must be using shield
 Two-weapon fighting  Add your ability modifer to your second weapon damage

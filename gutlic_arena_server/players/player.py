@@ -3,6 +3,8 @@ from gutlic_arena_server.entity import Entity
 from gutlic_arena_server import to_hit_engine
 from gutlic_arena_server import damage_engine
 from gutlic_arena_server.types.armor_type import ArmorType
+from gutlic_arena_server.armor import Armor
+from gutlic_arena_server.weapon import Weapon
 
 
 class Player(Entity):
@@ -23,7 +25,11 @@ class Player(Entity):
         self.add_languages(_class.get_languages())
         self.weapons = []
         self.armor = None
-        self.shield = None
+        # shield goes into one hand
+        # EITHER two_hands is None or BOTH left and right hands are  None
+        self.right_hand = None
+        self.left_hand = None
+        self.two_hands = None
 
     def has_trait(self, trait):
         # traits currently come from the class or the race
@@ -79,15 +85,54 @@ class Player(Entity):
     def get_armor(self):
         return self.armor
 
-    def set_shield(self, shield):
-        if shield.get_type() == ArmorType.SHIELD:
-            self.shield = shield
+    def set_right_hand(self, item):
+        if isinstance(item, Weapon) and item.get_two_handed():
+            return None
+        self.right_hand = item
+        return self.drop_two_hands()
 
-    def get_shield(self):
-        return self.shield
+    def set_left_hand(self, item):
+        if isinstance(item, Weapon) and item.get_two_handed():
+            return None
+        self.left_hand = item
+        return self.drop_two_hands()
+
+    def set_two_hands(self, item):
+        if isinstance(item, Weapon) and (item.get_two_handed() or item.get_versatile() is not None):
+            self.two_hands = item
+        # TODO: technically should return a list of what was dropped
+        self.drop_right_hand()
+        self.drop_left_hand()
+
+    def drop_right_hand(self):
+        item = self.right_hand
+        self.right_hand = None
+        return item
+
+    def drop_left_hand(self):
+        item = self.left_hand
+        self.left_hand = None
+        return item
+
+    def drop_two_hands(self):
+        item = self.two_hands
+        self.two_hands = None
+        return item
+
+    def get_right_hand(self):
+        return self.right_hand
+
+    def get_left_hand(self):
+        return self.left_hand
+
+    def get_two_hands(self):
+        return self.two_hands
 
     def wearing_unproficient_armor(self):
-        return self.is_armor_proficient(self.armor) is False or self.is_armor_proficient(self.shield) is False
+        return self.is_armor_proficient(self.armor) is False or self.is_armor_proficient(self.get_shield()) is False
+
+    def add_fighting_style(self, fs):
+        self._class.add_fighting_style(fs)
 
     def too_weak_for_armor(self):
         if self.armor is not None:
@@ -106,9 +151,17 @@ class Player(Entity):
         else:
             ac += self.get_dex_mod()
 
-        if self.shield is not None:
-            ac += self.shield.get_ac()
+        shield = self.get_shield()
+        if shield is not None:
+            ac += shield.get_ac()
         return ac
+
+    def get_shield(self):
+        if self.right_hand and isinstance(self.right_hand, Armor) and self.right_hand.get_type() == ArmorType.SHIELD:
+            return self.right_hand
+        elif self.left_hand and isinstance(self.left_hand, Armor) and self.left_hand.get_type() == ArmorType.SHIELD:
+            return self.left_hand
+        return None
 
     def get_speed(self):
         speed = self.race.get_speed()

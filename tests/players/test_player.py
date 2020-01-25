@@ -11,6 +11,9 @@ from gutlic_arena_server.players.races.human import Human
 from gutlic_arena_server.players.races.halfling import Halfling
 from gutlic_arena_server.types.armor_id import ArmorId
 from gutlic_arena_server.armors import armors
+from gutlic_arena_server.types.armor_type import ArmorType
+from gutlic_arena_server.weapons import weapons
+from gutlic_arena_server.types.weapon_id import WeaponId
 
 
 class TestPlayer(unittest.TestCase):
@@ -57,12 +60,12 @@ class TestPlayer(unittest.TestCase):
 
     def test_ac_naked_shield(self):
         player = Player('Radrick', [10, 10, 10, 10, 10, 10], Human(), Fighter())
-        player.set_shield(armors[ArmorId.SHIELD])
+        player.set_right_hand(armors[ArmorId.SHIELD])
         self.assertEqual(player.get_ac(), 12)
 
     def test_ac_heavy_high_dex(self):
         player = Player('Radrick', [10, 18, 10, 10, 10, 10], Human(), Fighter())
-        player.set_shield(armors[ArmorId.SHIELD])
+        player.set_right_hand(armors[ArmorId.SHIELD])
         player.set_armor(armors[ArmorId.PLATE])
         self.assertEqual(20, player.get_ac())
 
@@ -114,7 +117,44 @@ class TestPlayer(unittest.TestCase):
         player.set_armor(armors[ArmorId.PLATE])
         self.assertTrue(player.wearing_unproficient_armor())
 
-# non proficient armor
+    def test_no_shield(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Rogue())
+        self.assertIsNone(player.get_shield())
+
+    def test_right_shield(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Rogue())
+        player.set_right_hand(armors[ArmorId.SHIELD])
+        self.assertEqual(ArmorType.SHIELD, player.get_shield().get_type())
+
+    def test_left_shield(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Rogue())
+        player.set_left_hand(armors[ArmorId.SHIELD])
+        self.assertEqual(ArmorType.SHIELD, player.get_shield().get_type())
+
+    def test_replace(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Rogue())
+        player.set_right_hand(weapons[WeaponId.RAPIER])
+        player.set_left_hand(armors[ArmorId.SHIELD])
+        player.set_left_hand(weapons[WeaponId.DAGGER])
+        self.assertEqual(WeaponId.DAGGER, player.get_left_hand().get_id())
+
+    def test_two_hands(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Fighter())
+        player.set_right_hand(armors[ArmorId.SHIELD])
+        player.set_two_hands(weapons[WeaponId.MAUL])
+        self.assertIsNone(player.get_right_hand())
+        self.assertEqual(WeaponId.MAUL, player.get_two_hands().get_id())
+
+    def test_spear_one_hand(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Fighter())
+        player.set_right_hand(weapons[WeaponId.SPEAR])
+        self.assertEqual(WeaponId.SPEAR, player.get_right_hand().get_id())
+
+    def test_spear_two_hands(self):
+        player = Player('bob', [10, 10, 10, 10, 10, 10], Human(), Fighter())
+        player.set_two_hands(weapons[WeaponId.SPEAR])
+        self.assertEqual(WeaponId.SPEAR, player.get_two_hands().get_id())
+
 
 if __name__ == '__main__':
     unittest.main()

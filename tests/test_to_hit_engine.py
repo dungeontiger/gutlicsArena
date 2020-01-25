@@ -15,6 +15,7 @@ from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
 from gutlic_arena_server.armors import armors
 from gutlic_arena_server.types.armor_id import ArmorId
+from gutlic_arena_server.types.trait import Trait
 
 
 class TestToHitEngine(unittest.TestCase):
@@ -165,6 +166,46 @@ class TestToHitEngine(unittest.TestCase):
         set_values([20, 3])
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None), HitType.MISS)
+
+    def test_natural_20(self):
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Fighter())
+        target = Goblin()
+        set_values([20])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None), HitType.CRITICAL_HIT)
+
+    def test_natural_1(self):
+        attacker = Player('Bob', [18, 18, 17, 17, 17, 17], Human(), Fighter())
+        target = Goblin()
+        set_values([1])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None), HitType.CRITICAL_MISS)
+
+    def test_fs_archery(self):
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Fighter())
+        attacker.add_fighting_style(Trait.FIGHTING_STYLE_ARCHERY)
+        target = Goblin()
+        set_values([11])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, weapons[WeaponId.SHORTBOW], None), HitType.HIT)
+
+    def test_fs_defence_no_armor(self):
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Fighter())
+        target = Player('Other Bob', [10, 10, 17, 17, 17, 17], Human(), Fighter())
+        target.add_fighting_style(Trait.FIGHTING_STYLE_DEFENCE)
+        set_values([8])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None), HitType.HIT)
+
+    def test_fs_defence_armor(self):
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Fighter())
+        target = Player('Other Bob', [10, 10, 17, 17, 17, 17], Human(), Fighter())
+        target.add_fighting_style(Trait.FIGHTING_STYLE_DEFENCE)
+        target.set_armor(armors[ArmorId.LEATHER])
+        set_values([9])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(HitType.MISS, roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None))
+
 
 """
     TODO:
