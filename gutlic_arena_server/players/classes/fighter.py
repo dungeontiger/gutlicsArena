@@ -1,6 +1,7 @@
 """Fighter Class"""
 from gutlic_arena_server.players.player_class import PlayerClass
 from gutlic_arena_server.types.weapon_type import WeaponType
+from gutlic_arena_server.types.armor_type import ArmorType
 
 
 class Fighter(PlayerClass):
@@ -11,6 +12,11 @@ class Fighter(PlayerClass):
                                        WeaponType.SIMPLE_RANGED,
                                        WeaponType.MARTIAL_MELEE,
                                        WeaponType.MARTIAL_RANGED])
+        # fighters are proficient in all armor
+        self.add_armor_proficiencies([ArmorType.HEAVY_ARMOR,
+                                      ArmorType.MEDIUM_ARMOR,
+                                      ArmorType.LIGHT_ARMOR,
+                                      ArmorType.SHIELD])
 
     def __str__(self):
         return self.name

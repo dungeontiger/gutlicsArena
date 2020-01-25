@@ -10,6 +10,7 @@ class PlayerClass:
         self.traits = []
         self.languages = []
         self.weapon_proficiencies = []
+        self.armor_proficiencies = []
 
     def get_hd(self):
         return self.hd
@@ -38,11 +39,22 @@ class PlayerClass:
     def add_weapon_proficiencies(self, profs):
         self.weapon_proficiencies.extend(profs)
 
-    def is_proficient(self, weapon):
+    def add_armor_proficiencies(self, profs):
+        self.armor_proficiencies.extend(profs)
+
+    def is_weapon_proficient(self, weapon):
         # first check by weapon type, then check by weapon name
         if weapon.get_type() in self.weapon_proficiencies:
             return True
-        elif weapon.get_name() in self.weapon_proficiencies:
+        elif weapon.get_id() in self.weapon_proficiencies:
+            return True
+        return False
+
+    def is_armor_proficient(self, armor):
+        # first check by armor type, then check by armor name
+        if armor.get_type() in self.armor_proficiencies:
+            return True
+        elif armor.get_id() in self.armor_proficiencies:
             return True
         return False
 
