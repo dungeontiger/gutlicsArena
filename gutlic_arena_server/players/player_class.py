@@ -1,4 +1,7 @@
 """Class base class for players"""
+import math
+levels = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000,
+          195000, 225000, 265000, 305000, 355000]
 
 
 class PlayerClass:
@@ -18,8 +21,12 @@ class PlayerClass:
     def get_name(self):
         return self.name
 
+    # TODO: this could be simplified
     def get_level(self):
-        return self.level
+        for level in range(0, 19):
+            if levels[level] <= self.exp < levels[level + 1]:
+                return level + 1
+        return 20
 
     def get_exp(self):
         return self.exp
@@ -27,6 +34,8 @@ class PlayerClass:
     def add_exp(self, xp):
         # TODO:
         self.exp = self.exp + xp
+        if self.exp < 0:
+            self.exp = 0
         # did they advance a level?
         return False
 
@@ -60,6 +69,9 @@ class PlayerClass:
 
     def has_trait(self, trait):
         return trait in self.traits
+
+    def get_proficiency_bonus(self):
+        return math.ceil(self.get_level() / 4) + 1
 
     def __str__(self):
         return self.name

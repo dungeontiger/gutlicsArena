@@ -2,7 +2,7 @@ from .types.roll_type import RollType
 
 
 class Armor:
-    def __init__(self, _id, _name, _type, cost, ac, max_dex_mod, str_required, stealth, weight):
+    def __init__(self, _name, _id, _type, cost, ac, max_dex_mod, str_required, stealth, weight):
         self._name = _name
         self._id = _id
         self._type = _type

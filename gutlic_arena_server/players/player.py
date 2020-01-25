@@ -102,5 +102,7 @@ class Player(Entity):
             ac += self.shield.get_ac()
         return ac
 
+
+
     def __str__(self):
         return '{0}, {1} {2}'.format(self.name, self.race.get_name(), self._class.get_name())

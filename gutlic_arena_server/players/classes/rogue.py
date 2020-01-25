@@ -29,4 +29,5 @@ TODO:
 
 Expertise
 Sneak Attack
+    Sneak attack bonus = level / 2 (rounded up) d6
 """
