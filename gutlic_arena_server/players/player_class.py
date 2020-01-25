@@ -61,7 +61,7 @@ class PlayerClass:
 
     def is_armor_proficient(self, armor):
         # first check by armor type, then check by armor name
-        if armor.get_type() in self.armor_proficiencies:
+        if armor is None or armor.get_type() in self.armor_proficiencies:
             return True
         elif armor.get_id() in self.armor_proficiencies:
             return True

@@ -86,6 +86,15 @@ class Player(Entity):
     def get_shield(self):
         return self.shield
 
+    def wearing_unproficient_armor(self):
+        return self.is_armor_proficient(self.armor) is False or self.is_armor_proficient(self.shield) is False
+
+    def too_weak_for_armor(self):
+        if self.armor is not None:
+            required = self.armor.get_str_required()
+            return required != 0 and self.get_str() < required
+        return False
+
     def get_ac(self):
         ac = 10
         if self.armor is not None:
@@ -101,7 +110,11 @@ class Player(Entity):
             ac += self.shield.get_ac()
         return ac
 
-
+    def get_speed(self):
+        speed = self.race.get_speed()
+        if self.too_weak_for_armor():
+            return speed - 10
+        return speed
 
     def __str__(self):
         return '{0}, {1} {2}'.format(self.name, self.race.get_name(), self._class.get_name())

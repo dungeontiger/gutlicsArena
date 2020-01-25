@@ -41,7 +41,7 @@ class Race:
         return self.size
 
     def get_speed(self):
-        return self.size
+        return self.speed
 
     def get_languages(self):
         return self.languages
