@@ -22,7 +22,6 @@ class Player(Entity):
         self.add_languages(race.get_languages())
         self.add_languages(_class.get_languages())
         self.weapons = []
-        self.proficiency = 2
         self.armor = None
         self.shield = None
 
@@ -38,7 +37,7 @@ class Player(Entity):
 
     def get_proficiency_bonus(self, weapon):
         if self._class.is_weapon_proficient(weapon):
-            return self.proficiency
+            return self._class.get_proficiency_bonus()
         return 0
 
     def is_weapon_proficient(self, weapon):
