@@ -13,6 +13,8 @@ from gutlic_arena_server.players.classes.fighter import Fighter
 from gutlic_arena_server.players.classes.rogue import Rogue
 from tests.dice_side_effects import set_values
 from tests.dice_side_effects import value
+from gutlic_arena_server.armors import armors
+from gutlic_arena_server.types.armor_id import ArmorId
 
 
 class TestToHitEngine(unittest.TestCase):
@@ -155,6 +157,14 @@ class TestToHitEngine(unittest.TestCase):
         set_values([13])
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(roll_to_hit(attacker, target, attack, None), HitType.MISS)
+
+    def test_unproficient_armor(self):
+        attacker = Player('Bob', [10, 10, 17, 17, 17, 17], Human(), Rogue())
+        target = Goblin()
+        attacker.set_armor(armors[ArmorId.PLATE])
+        set_values([20, 3])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None), HitType.MISS)
 
 """
     TODO:

@@ -2,6 +2,7 @@
 from gutlic_arena_server.types.hit_type import HitType
 from gutlic_arena_server import dice
 from gutlic_arena_server.types.trait import Trait
+from gutlic_arena_server.types.roll_type import RollType
 
 
 def roll_to_hit(attacker, target, attack, arena):
@@ -21,9 +22,12 @@ def roll_to_hit(attacker, target, attack, arena):
 
     # TODO: fighting style archer bonus
 
-    roll = dice.d20()
+    roll_type = RollType.NORMAL
+    if attacker.wearing_unproficient_armor():
+        roll_type = RollType.DISADVANTAGE
+    roll = dice.d20(roll_type)
 
-    # if lucky can reroll ones
+    # if lucky can re-roll ones
     if roll == 1 and attacker.has_trait(Trait.LUCKY):
         roll = dice.d20()
 
