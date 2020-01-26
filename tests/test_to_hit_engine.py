@@ -16,6 +16,7 @@ from tests.dice_side_effects import value
 from gutlic_arena_server.armors import armors
 from gutlic_arena_server.types.armor_id import ArmorId
 from gutlic_arena_server.types.trait import Trait
+from gutlic_arena_server.monsters.orc import Orc
 
 
 class TestToHitEngine(unittest.TestCase):
@@ -206,19 +207,24 @@ class TestToHitEngine(unittest.TestCase):
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(HitType.MISS, roll_to_hit(attacker, target, weapons[WeaponId.DAGGER], None))
 
-
-"""
-    TODO:
+    # monster hitting monster
     def test_goblin_attack_orc(self):
         attacker = Goblin()
         target = Orc()
+        set_values([13])
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(roll_to_hit(attacker, target, attacker.get_actions()[0], None), HitType.HIT)
-"""
+
+    def test_goblin_attack_player(self):
+        attacker = Goblin()
+        target = Player('Bob', [10, 10, 10, 10, 10, 10], Human(), Fighter())
+        target.set_armor(armors[ArmorId.CHAIN_SHIRT])
+        target.set_left_hand(armors[ArmorId.SHIELD])
+        set_values([11])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(roll_to_hit(attacker, target, attacker.get_actions()[0], None), HitType.HIT)
+
 
 if __name__ == '__main__':
     unittest.main()
 
-"""
-monster hitting player
-"""

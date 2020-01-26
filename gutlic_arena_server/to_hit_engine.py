@@ -3,28 +3,37 @@ from gutlic_arena_server.types.hit_type import HitType
 from gutlic_arena_server import dice
 from gutlic_arena_server.types.trait import Trait
 from gutlic_arena_server.types.roll_type import RollType
+from gutlic_arena_server.weapon import Weapon
 
 
 def roll_to_hit(attacker, target, attack, arena):
-    # default to miss
+    # defaults
     hit = HitType.MISS
 
-    # get proficiency bonus for this weapon
-    to_hit_mod = attacker.get_proficiency_bonus(attack)
+    # differences between weapons and monster attacks
+    is_weapon = isinstance(attack, Weapon)
 
-    # pick either str or dex modifier as appropriate
-    if attack.get_finesse():
-        to_hit_mod += max(attacker.get_dex_mod(), attacker.get_str_mod())
-    elif attack.is_melee():
-        to_hit_mod += attacker.get_str_mod()
-    elif attack.is_ranged():
-        to_hit_mod += attacker.get_dex_mod()
+    if is_weapon:
+        # get proficiency bonus for this weapon
+        to_hit_mod = attacker.get_proficiency_bonus(attack)
+
+        # pick either str or dex modifier as appropriate
+        if attack.get_finesse():
+            to_hit_mod += max(attacker.get_dex_mod(), attacker.get_str_mod())
+        elif attack.is_melee():
+            to_hit_mod += attacker.get_str_mod()
+        elif attack.is_ranged():
+            to_hit_mod += attacker.get_dex_mod()
+    else:
+        to_hit_mod = attack.get_to_hit()
 
     # TODO: determine advantage / disadvantage; flanking, etc.
 
     roll_type = RollType.NORMAL
-    if attacker.wearing_unproficient_armor():
+    if is_weapon and attacker.wearing_unproficient_armor():
         roll_type = RollType.DISADVANTAGE
+
+    # make the roll
     roll = dice.d20(roll_type)
 
     # if lucky can re-roll ones

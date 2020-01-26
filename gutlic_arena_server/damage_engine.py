@@ -7,17 +7,19 @@ from gutlic_arena_server.weapon import Weapon
 
 def roll_damage(attacker, target, attack, hit, arena):
     damage = 0
+    is_weapon = isinstance(attack, Weapon)
     if hit is HitType.HIT or hit is HitType.CRITICAL_HIT:
         dmg_mod = 0
-        if attack.get_finesse():
-            dmg_mod += max(attacker.get_dex_mod(), attacker.get_str_mod())
-        elif attack.is_melee():
-            dmg_mod += attacker.get_str_mod()
-        elif attack.is_ranged():
-            dmg_mod += attacker.get_dex_mod()
+        if is_weapon:
+            if attack.get_finesse():
+                dmg_mod += max(attacker.get_dex_mod(), attacker.get_str_mod())
+            elif attack.is_melee():
+                dmg_mod += attacker.get_str_mod()
+            elif attack.is_ranged():
+                dmg_mod += attacker.get_dex_mod()
 
         damage_roll = attack.get_damage()
-        if isinstance(attack, Weapon) and attack.get_versatile() is not None and attacker.get_two_hands() == attack:
+        if is_weapon and attack.get_versatile() is not None and attacker.get_two_hands() == attack:
             damage_roll = attack.get_versatile()
 
         # TODO, this assumes the attack is the same as what is a hand

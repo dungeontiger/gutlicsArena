@@ -72,7 +72,7 @@ class TestPlayer(unittest.TestCase):
     def test_medium_armor_dex(self):
         player = Player('Radrick', [10, 18, 10, 10, 10, 10], Human(), Fighter())
         player.set_armor(armors[ArmorId.HIDE])
-        self.assertEqual(16, player.get_ac())
+        self.assertEqual(14, player.get_ac())
 
     def test_too_weak_no_armor(self):
         player = Player('Radrick', [10, 18, 10, 10, 10, 10], Human(), Fighter())

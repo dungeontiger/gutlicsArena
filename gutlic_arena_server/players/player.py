@@ -147,7 +147,10 @@ class Player(Entity):
             if self.armor.get_max_dex_mod() == -1:
                 ac += self.get_dex_mod()
             elif self.armor.get_max_dex_mod() > 0:
-                ac += max(self.get_dex_mod(), self.armor.get_max_dex_mod())
+                if self.get_dex_mod() > self.armor.get_max_dex_mod():
+                    ac += self.armor.get_max_dex_mod()
+                else:
+                    ac += self.get_dex_mod()
         else:
             ac += self.get_dex_mod()
 

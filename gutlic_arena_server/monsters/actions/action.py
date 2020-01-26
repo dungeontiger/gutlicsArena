@@ -21,10 +21,7 @@ class Action:
     def get_to_hit(self):
         return self.to_hit
 
-    def get_dmg(self):
-        return dice.roll(self.dmg)
-
-    def get_dmg_str(self):
+    def get_damage(self):
         return self.dmg
 
     def get_dmg_type(self):

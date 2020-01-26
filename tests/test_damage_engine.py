@@ -13,6 +13,7 @@ from tests.dice_side_effects import value
 from gutlic_arena_server.types.trait import Trait
 from gutlic_arena_server.armors import armors
 from gutlic_arena_server.types.armor_id import ArmorId
+from gutlic_arena_server.monsters.goblin import Goblin
 
 
 class TestDamageEngine(unittest.TestCase):
@@ -143,10 +144,12 @@ class TestDamageEngine(unittest.TestCase):
         with patch('gutlic_arena_server.dice._random_int', side_effect=value):
             self.assertEqual(10, roll_damage(attacker, None, attacker.get_two_hands(), HitType.HIT, None))
 
+    def test_monster(self):
+        attacker = Goblin()
+        set_values([1])
+        with patch('gutlic_arena_server.dice._random_int', side_effect=value):
+            self.assertEqual(3, roll_damage(attacker, None, attacker.get_actions()[0], HitType.HIT, None))
+
 
 if __name__ == '__main__':
     unittest.main()
-
-"""
-test monster damage
-"""
