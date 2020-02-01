@@ -3,6 +3,7 @@ from enum import Enum, auto
 
 class Action(Enum):
     UNKNOWN = auto()
+    ERROR = auto()
     EXIT = auto()
     CONTINUE = auto()
     DEBUG = auto()

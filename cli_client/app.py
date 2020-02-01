@@ -1,7 +1,8 @@
 import requests
-from colorama import init, Fore, Back, Style
-from cli_client.built_in_cmd import BuiltInCmds
+from colorama import init, Fore, Style
 from cli_client.action import Action
+from cli_client.menu import Menu
+from cli_client.utils import draw_header, clear_screen
 
 
 class App:
@@ -17,8 +18,10 @@ class App:
          '\ti: see your current inventory',
          '\tc: see your current character']
     version = 'Command Line Interface (CLI) Client 0.1'
+    # TODO: need global debug
     _debug = False
     connected = False
+    new_game = None
 
     def __init__(self):
         # initialize the colorama library
@@ -29,6 +32,7 @@ class App:
         self.connect()
         # loop until the user exists the game
         while action is not Action.EXIT:
+            # clear the screen each time we want to draw the main menu
             if action is Action.MAIN_MENU:
                 #
                 # main menu
@@ -53,56 +57,20 @@ class App:
                 if self.connected is False:
                     self.draw_error('Not connected to the server.  Cannot create a new game.')
                     action = previous_action
+                else:
+                    # action = self.new_game_handler()
+                    action = self.new_game()
         # outside the loop and about to exit
-        print('Exiting Gutlic\'s Arena')
+        clear_screen()
+        print(Fore.GREEN + Style.BRIGHT +'Gutlic\'s Arena is over.' + Fore.RESET + Style.NORMAL)
 
     def main_menu(self):
-        menu = [{'label': 'New game', 'action': Action.NEW_GAME},
-                #{'label': 'Continue game', 'action': Action.CONTINUE_GAME},
-                {'label': 'Help', 'action': Action.HELP},
-                {'label': 'Exit', 'action': Action.EXIT}]
-        return self.draw_menu(menu)
-
-    def draw_header(self):
-        title = self.version
-        if self._debug:
-            if self.connected is True:
-                title += ' (connected)'
-            else:
-                title += ' (not connected)'
-            title += Fore.RED + ' (debug)' + Fore.RESET + Style.NORMAL
-        # clears the screen
-        print('\033[2J')
-        print(Fore.GREEN + Style.BRIGHT + "Gutlic's Arena" + Fore.RESET + Style.NORMAL)
-        print(title)
-        print('===================================================')
-        print('')
-
-    def draw_menu(self, menu):
-        action = Action.UNKNOWN
-        _error = ''
-        while action is Action.UNKNOWN:
-            self.draw_header()
-            i = 0
-            for m in menu:
-                i += 1
-                print('{}. {}'.format(i, m['label']))
-            print('')
-            print(_error)
-            # get the output and see if its valid, if valid return the action
-            cmd = input(Fore.RED + '> ' + Fore.RESET + Style.NORMAL)
-            action = self.get_built_in_action(cmd)
-            if action != Action.UNKNOWN:
-                return action
-            elif self.is_int(cmd) and 1 <= int(cmd) <= len(menu):
-                return menu[int(cmd) - 1]['action']
-            _error = Fore.RED + 'Invalid command or option.' + Fore.RESET + Style.NORMAL
-
-    @staticmethod
-    def get_built_in_action(cmd):
-        if cmd in BuiltInCmds.cmds:
-            return BuiltInCmds.cmds[cmd]
-        return Action.UNKNOWN
+        menu = Menu([{'label': 'New game', 'action': Action.NEW_GAME},
+                     # TODO: Continue if there is a local JSON file with the details...or on the server?
+                     # {'label': 'Continue game', 'action': Action.CONTINUE_GAME},
+                     {'label': 'Help', 'action': Action.HELP},
+                     {'label': 'Exit', 'action': Action.EXIT}])
+        return menu.draw()
 
     def connect(self):
         try:
@@ -111,19 +79,13 @@ class App:
                 self.connected = True
             else:
                 self.connected = False
-        except Exception:
+        # TODO: I'm annoying with this generic exception but nothing specific seemed to work
+        except Exception as e:
             self.connected = False
 
-    @staticmethod
-    def is_int(value):
-        try:
-            int(value)
-            return True
-        except ValueError:
-            return False
-
     def draw_help(self, help_text):
-        self.draw_header()
+        clear_screen()
+        draw_header()
         for t in help_text:
             print(t)
         print('')
@@ -131,11 +93,28 @@ class App:
         return
 
     def draw_error(self, error_text):
-        self.draw_header()
+        clear_screen()
+        draw_header()
         print(Fore.RED + Style.BRIGHT + error_text + Fore.RESET + Style.NORMAL)
         print('')
         input('Press ENTER to continue...')
         return
+
+    def new_game_handler(self):
+        if self.new_game is None:
+            # get a basic game from the server
+            response = requests.get(self.server_url + '/new_game')
+            if self._debug:
+                print(response.json())
+            self.new_game = response.json()
+        # now we want to build a menu based on what is missing from the character
+        menu = []
+        # list of attributes, name, race, etc...
+        for attrib in self.new_game:
+            menu.append({'label':attrib['empty_label'], 'action': None})
+        menu.append({'label': 'Back', 'action': None})
+        self.draw_menu(menu)
+        return Action.EXIT
 
 
 # singleton application

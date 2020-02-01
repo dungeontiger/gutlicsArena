@@ -1,0 +1,44 @@
+[
+  {
+    "id": "name",
+    "empty_label": "Choose your name",
+    "edit_label": "Edit your name",
+    "value": null,
+    "choices": [
+      {
+        "id": "enter_name",
+        "empty_label": "Enter your name",
+        "action": "enter"
+      },
+      {
+        "id": "server_generated",
+        "empty_label": "Generate a name",
+        "action": "/new_game/generate_name"
+      }
+    ]
+  },
+  {
+    "id": "stats",
+    "empty_label": "Roll your stats",
+    "edit_label": "Re-roll your stats",
+    "value": null
+  },
+  {
+    "id": "sex",
+    "empty_label": "Choose your sex",
+    "edit_label": "Change your sex",
+    "value": null
+  },
+   {
+    "id": "race",
+    "empty_label": "Choose your race",
+    "edit_label": "Change your race",
+    "value": null
+  },
+  {
+    "id": "class",
+    "empty_label": "Choose your class",
+    "edit_label": "Edit your class",
+    "value": null
+  }
+]
