@@ -9,4 +9,5 @@ def capture_print(t, end='\n'):
 
 def clear():
     """Mocks clear screen.  Clears the lines of text"""
+    # TODO: this should actually create a stack of output so I can test each screen
     lines.clear()

@@ -1,0 +1,22 @@
+{
+  "id": "choose_sex",
+  "title": ["Choose the Sex of Your Character"],
+  "items": [
+    {
+      "id": "male",
+      "label": "Male"
+    },
+    {
+      "id": "female",
+      "label": "Female"
+    },
+    {
+      "id": "non-binary",
+      "label": "Non-binary"
+    },
+    {
+      "id": "back",
+      "label": "Back"
+    }
+  ]
+}

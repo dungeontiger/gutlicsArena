@@ -1,0 +1,20 @@
+{
+  "id": "main_menu",
+  "items": [
+    {
+      "id": "new_game",
+      "label": "New Game",
+      "help": "Create a new game."
+    },
+    {
+      "id": "help",
+      "label": "Help",
+      "help": "Display general help."
+    },
+    {
+      "id": "exit",
+      "label": "Exit",
+      "help": "Exit the game."
+    }
+  ]
+}

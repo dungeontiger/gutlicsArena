@@ -1,0 +1,18 @@
+{
+  "id": "choose_name",
+  "title": ["Enter or Generate a Name"],
+  "items": [
+    {
+      "id": "enter_name",
+      "label": "Enter Name"
+    },
+    {
+      "id": "generate_name",
+      "label": "Generate Name"
+    },
+    {
+      "id": "back",
+      "label": "Back"
+    }
+  ]
+}

@@ -1,8 +1,11 @@
 import requests
+import json
+from pathlib import Path
 from colorama import init, Fore, Style
-from cli_client.action import Action
 from cli_client.menu import Menu
-from cli_client.utils import draw_header, clear_screen
+from cli_client.utils import clear_screen
+from cli_client.utils import headers
+from cli_client.msg_box import show_msg_box
 
 
 class App:
@@ -17,60 +20,53 @@ class App:
          '\tx, X, q, Q: exit the game (your game progress will be saved)',
          '\ti: see your current inventory',
          '\tc: see your current character']
-    version = 'Command Line Interface (CLI) Client 0.1'
     # TODO: need global debug
     _debug = False
     connected = False
-    new_game = None
 
     def __init__(self):
         # initialize the colorama library
         init()
+        # read the game state is it exists and load it
+        # TODO: deal with path Windows / Mac
+        main_menu_json = json.load(open('cli_client/resources/main_menu.json', 'r'))
+        p = Path('state.json')
+        if p.exists():
+            self.state = json.load(open(p, 'r'))
+            # since there is state, add a continue menu option
+            main_menu_json['items'].insert(1, {'id': 'continue_game', 'label': 'Continue Game'})
+        else:
+            self.state = {}
+        self.main_menu = Menu(main_menu_json, headers)
 
     def run(self):
-        action = Action.MAIN_MENU
-        self.connect()
+        choice = None
         # loop until the user exists the game
-        while action is not Action.EXIT:
+        while choice != "exit":
             # clear the screen each time we want to draw the main menu
-            if action is Action.MAIN_MENU:
-                #
-                # main menu
-                #
-                previous_action = action
-                action = self.main_menu()
-            elif action is Action.DEBUG:
-                #
-                # toggle the debug flag
-                #
-                self._debug = not self._debug
-                action = previous_action
-            elif action is Action.HELP:
-                #
-                # help
-                #
-                action = previous_action
-                self.draw_help(self.main_help)
-            elif action is Action.NEW_GAME:
-                if self.connected is False:
+            msg = ''
+            self.connect()
+            if not self.connected:
+                msg = Fore.RED + Style.BRIGHT + 'Not Connected to Server' + Fore.RESET+ Style.NORMAL
+            choice = self.main_menu.draw(msg)
+            if choice == 'new_game':
+                # delete any state
+                # if not connected try again
+                if not self.connected:
                     self.connect()
-                if self.connected is False:
-                    self.draw_error('Not connected to the server.  Cannot create a new game.')
-                    action = previous_action
-                else:
-                    # action = self.new_game_handler()
-                    action = self.new_game()
+                self.new_game_handler()
+            elif choice == 'continue_game':
+                # use the existing state
+                # if not connected try again
+                if not self.connected:
+                    self.connect()
+                self.continue_game_handler()
+            elif choice == 'help':
+                self.draw_help(self.main_help)
+
         # outside the loop and about to exit
         clear_screen()
         print(Fore.GREEN + Style.BRIGHT +'Gutlic\'s Arena is over.' + Fore.RESET + Style.NORMAL)
-
-    def main_menu(self):
-        menu = Menu([{'label': 'New game', 'action': Action.NEW_GAME},
-                     # TODO: Continue if there is a local JSON file with the details...or on the server?
-                     # {'label': 'Continue game', 'action': Action.CONTINUE_GAME},
-                     {'label': 'Help', 'action': Action.HELP},
-                     {'label': 'Exit', 'action': Action.EXIT}])
-        return menu.draw()
 
     def connect(self):
         try:
@@ -85,36 +81,49 @@ class App:
 
     def draw_help(self, help_text):
         clear_screen()
-        draw_header()
+        # draw_header()
         for t in help_text:
             print(t)
         print('')
         input('Press ENTER to continue...')
         return
 
-    def draw_error(self, error_text):
-        clear_screen()
-        draw_header()
-        print(Fore.RED + Style.BRIGHT + error_text + Fore.RESET + Style.NORMAL)
-        print('')
-        input('Press ENTER to continue...')
-        return
-
     def new_game_handler(self):
-        if self.new_game is None:
-            # get a basic game from the server
-            response = requests.get(self.server_url + '/new_game')
-            if self._debug:
-                print(response.json())
-            self.new_game = response.json()
-        # now we want to build a menu based on what is missing from the character
-        menu = []
-        # list of attributes, name, race, etc...
-        for attrib in self.new_game:
-            menu.append({'label':attrib['empty_label'], 'action': None})
-        menu.append({'label': 'Back', 'action': None})
-        self.draw_menu(menu)
-        return Action.EXIT
+        # don't try to create a new game if the server is not running
+        if not self.connected:
+            show_msg_box('Not connected to the server.  Either start the server or try again later.')
+            return
+        # tell the server we want to start a new game and erase any state because this is new
+        # TODO: add a Y/N verification dialog
+        self.state = {}
+        # new is the same as continue except we wipe out the state first
+        self.continue_game_handler()
+
+    def continue_game_handler(self):
+        # don't try to continue if the server is not running
+        if not self.connected:
+            show_msg_box('Not connected to the server.  Either start the server or try again later.')
+            return
+        choice = ''
+        menu_id = ''
+        while choice != 'go_to_main':
+            request_data = {'state': self.state}
+            if choice != '':
+                request_data['menu_id'] = menu_id
+                request_data['item'] = choice
+            response = requests.post(self.server_url + '/new_game', json=request_data).json()
+            # the response will contain a menu - draw it
+            menu = Menu(response['menu'])
+            menu_id = response['menu']['id']
+            # get the state and save it
+            self.state = response['state']
+            self.save_state()
+            choice = menu.draw()
+
+    def save_state(self):
+        # write this state to disk so the game is 'always saved'
+        # TODO: save this in a different location
+        json.dump(self.state, open('state.json', 'w'))
 
 
 # singleton application
